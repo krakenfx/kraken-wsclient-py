@@ -77,7 +77,7 @@ class KrakenClientFactory(WebSocketClientFactory, KrakenReconnectingClientFactor
 
 class KrakenSocketManager(threading.Thread):
 
-    STREAM_URL = 'wss://ws-1-dcezvz1.kraken.com'
+    STREAM_URL = 'wss://ws-sandbox.kraken.com'
 
     def __init__(self):  # client
         """Initialise the KrakenSocketManager"""
