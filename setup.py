@@ -1,13 +1,13 @@
 from setuptools import setup
 
 setup(name='kraken-wsclient-py',
-      version='0.0.3',
+      version='0.0.4',
       description='Sample Kraken WebSockets client',
       url='http://github.com/krakenfx/kraken-wsclient-py',
       author='Kraken',
       author_email='engineering@kraken.com',
       license='MIT',
-      packages=['kraken-wsclient-py'],
+      packages=['kraken_wsclient_py'],
       python_requires='>=3',
       install_requires=[
           'asn1crypto==0.24.0',
