@@ -110,7 +110,6 @@ class KrakenSocketManager(threading.Thread):
         factory = self.factories[id_]
         context_factory = ssl.ClientContextFactory()
         self._conns[id_] = connectWS(factory, context_factory)
-        print('conns', self._conns)
 
     def stop_socket(self, conn_key):
         """Stop a websocket given the connection key
