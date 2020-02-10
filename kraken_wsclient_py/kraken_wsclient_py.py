@@ -78,6 +78,7 @@ class KrakenClientFactory(WebSocketClientFactory, KrakenReconnectingClientFactor
 class KrakenSocketManager(threading.Thread):
 
     STREAM_URL = 'wss://ws.kraken.com'
+    PRIVATE_STREAM_URL = 'wss://ws-auth.kraken.com'
 
     def __init__(self):  # client
         """Initialise the KrakenSocketManager"""
@@ -89,11 +90,14 @@ class KrakenSocketManager(threading.Thread):
         self._user_listen_key = None
         self._user_callback = None
 
-    def _start_socket(self, id_, payload, callback):
+    def _start_socket(self, id_, payload, callback, private=False):
         if id_ in self._conns:
             return False
 
-        factory_url = self.STREAM_URL
+        if private:
+            factory_url = self.PRIVATE_STREAM_URL
+        else:
+            factory_url = self.STREAM_URL
         factory = KrakenClientFactory(factory_url, payload=payload)
         factory.base_client = self
         factory.protocol = KrakenClientProtocol
@@ -169,12 +173,29 @@ class WssClient(KrakenSocketManager):
         finally:
             reactor.stop()
 
-    def subscribe_public(self, pair, subscription, callback):
-        id_ = "_".join([subscription['name'], pair[0]])
+    def subscribe_public(self, subscription, callback, **kwargs):
+        self._subscribe(subscription, callback, False, **kwargs)
+
+    def subscribe_private(self, subscription, callback, **kwargs):
+        self._subscribe(subscription, callback, True, **kwargs)
+
+    def _subscribe(self, subscription, callback, private, **kwargs):
+        if 'pair' in kwargs:
+            id_ = "_".join([subscription['name'], kwargs['pair'][0]])
+        else:
+            id_ = "_".join([subscription['name']])
+
         data = {
             'event': 'subscribe',
             'subscription': subscription,
-            'pair': pair,
         }
+        data.update(**kwargs)
         payload = json.dumps(data, ensure_ascii=False).encode('utf8')
-        return self._start_socket(id_, payload, callback)
+        return self._start_socket(id_, payload, callback, private=private)
+
+    # TODO: Currently not supported by Kraken WSS API. Untested.
+    def request(self, request, callback, **kwargs):
+        id_ = "_".join([request['event'], request['type']])
+
+        payload = json.dumps(request, ensure_ascii=False).encode('utf8')
+        return self._start_socket(id_, payload, callback, private=True)
