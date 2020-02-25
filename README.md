@@ -16,11 +16,20 @@ demonstration purposes only.  It is neither maintained nor supported.
         print(message)
 
     my_client = client.WssClient()
+
     my_client.subscribe_public(
         subscription={
             'name': 'trade'
         },
         pair=['XBT/USD', 'XRP/USD'],
+        callback=my_handler
+    )
+
+    my_client.subscribe_private(
+        subscription={
+            'name': 'openOrders',
+            'token': '__WS_TOKEN_HERE__'
+        },
         callback=my_handler
     )
 
