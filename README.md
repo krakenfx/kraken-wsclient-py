@@ -16,24 +16,43 @@ demonstration purposes only.  It is neither maintained nor supported.
         print(message)
 
     my_client = client.WssClient()
+    my_client.start()
+
+    # Sample public-data subscription:
 
     my_client.subscribe_public(
-        subscription={
+        subscription = {
             'name': 'trade'
         },
-        pair=['XBT/USD', 'XRP/USD'],
-        callback=my_handler
+        pair = ['XBT/USD', 'XRP/USD'],
+        callback = my_handler
     )
 
+    # Sample private-data subscription:
+
     my_client.subscribe_private(
-        subscription={
+        subscription = {
             'name': 'openOrders',
             'token': '__WS_TOKEN_HERE__'
         },
-        callback=my_handler
+        callback = my_handler
     )
 
-    my_client.start()
+    # Sample order-entry call:
+
+    my_client.request(
+        request = {
+            'token': '__WS_TOKEN_HERE__',
+            'event': 'addOrder',
+            'type': 'buy',
+            'ordertype': 'limit',
+            'pair': 'XBT/USD',
+            'price': '9000',
+            'volume': '0.01',
+            'userref': '666'
+        },
+        callback = my_handler
+    )
 
 
 ## Compatibility
