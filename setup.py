@@ -1,8 +1,13 @@
 from setuptools import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(name='kraken-wsclient-py',
       version='0.0.5',
       description='Sample Kraken WebSockets client',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       url='http://github.com/krakenfx/kraken-wsclient-py',
       author='Kraken',
       author_email='engineering@kraken.com',
