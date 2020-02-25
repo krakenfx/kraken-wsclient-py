@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='kraken-wsclient-py',
-      version='0.0.4',
+      version='0.0.5',
       description='Sample Kraken WebSockets client',
       url='http://github.com/krakenfx/kraken-wsclient-py',
       author='Kraken',
