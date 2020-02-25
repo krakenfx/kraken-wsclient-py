@@ -193,9 +193,7 @@ class WssClient(KrakenSocketManager):
         payload = json.dumps(data, ensure_ascii=False).encode('utf8')
         return self._start_socket(id_, payload, callback, private=private)
 
-    # TODO: Currently not supported by Kraken WSS API. Untested.
     def request(self, request, callback, **kwargs):
         id_ = "_".join([request['event'], request['type']])
-
         payload = json.dumps(request, ensure_ascii=False).encode('utf8')
         return self._start_socket(id_, payload, callback, private=True)
