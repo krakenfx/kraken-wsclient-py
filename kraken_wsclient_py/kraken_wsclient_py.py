@@ -98,22 +98,28 @@ class KrakenSocketManager(threading.Thread):
             factory_url = self.PRIVATE_STREAM_URL
         else:
             factory_url = self.STREAM_URL
+
         factory = KrakenClientFactory(factory_url, payload=payload)
         factory.base_client = self
         factory.protocol = KrakenClientProtocol
         factory.callback = callback
         factory.reconnect = True
         self.factories[id_] = factory
-        reactor.callFromThread(self.add_connection, id_)
+        reactor.callFromThread(self.add_connection, id_, factory_url)
 
-    def add_connection(self, id_):
+    def add_connection(self, id_, url):
         """
         Convenience function to connect and store the resulting
         connector.
         """
+        if not url.startswith("wss://"):
+            raise ValueError("expected wss:// URL prefix")
+
+        hostname = url[6:]
+
         factory = self.factories[id_]
-        context_factory = ssl.ClientContextFactory()
-        self._conns[id_] = connectWS(factory, context_factory)
+        options = ssl.optionsForClientTLS(hostname=hostname) # for TLS SNI
+        self._conns[id_] = connectWS(factory, options)
 
     def stop_socket(self, conn_key):
         """Stop a websocket given the connection key
