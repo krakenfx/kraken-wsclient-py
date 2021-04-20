@@ -17,7 +17,7 @@ setup(name='kraken-wsclient-py',
       install_requires=[
           'asn1crypto==0.24.0',
           'attrs==18.2.0',
-          'autobahn==19.1.1',
+          'autobahn==20.12.3',
           'Automat==0.7.0',
           'cffi==1.14.0',
           'constantly==15.1.0',
