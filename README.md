@@ -54,6 +54,48 @@ demonstration purposes only.  It is neither maintained nor supported.
         callback = my_handler
     )
 
+    # Sample usage with process_data_for_tradingview function:
+
+    def process_data_for_tradingview(data):
+        # Implement the logic to process incoming data and store it in a format suitable for TradingView
+        pass
+
+    my_client.subscribe_public(
+        subscription = {
+            'name': 'trade'
+        },
+        pair = ['XBT/USD', 'XRP/USD'],
+        callback = process_data_for_tradingview
+    )
+
+    # Displaying TradingView chart:
+
+    # Use the TradingView Charting Library to display the chart with the processed data.
+    # Refer to the TradingView Charting Library documentation for detailed instructions on how to integrate and display the chart.
+
+    # Using a third-party library to integrate Kraken data with TradingView:
+
+    import ccxt
+    import pandas as pd
+
+    def fetch_ohlcv_data():
+        exchange = ccxt.kraken()
+        ohlcv = exchange.fetch_ohlcv('BTC/USD', timeframe='1m')
+        df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        return df
+
+    # Use the fetched data to display the TradingView chart.
+
+    # Creating a custom solution to display charts using matplotlib:
+
+    import matplotlib.pyplot as plt
+
+    def plot_ohlcv_data(df):
+        fig, ax = plt.subplots()
+        ax.plot(df['timestamp'], df['close'])
+        plt.show()
+
+    # Fetch the data and plot it using the custom solution.
 
 ## Compatibility
 
@@ -62,4 +104,3 @@ This code has been tested on Python 3.7.
 ## Contributing
 
 Pull requests are not monitored and likely will be ignored.
-
