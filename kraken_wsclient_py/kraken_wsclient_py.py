@@ -3,6 +3,7 @@ import threading
 import json
 import hmac
 import hashlib
+from decimal import Decimal
 from autobahn.twisted.websocket import WebSocketClientFactory, \
     WebSocketClientProtocol, \
     connectWS
@@ -30,7 +31,7 @@ class KrakenClientProtocol(WebSocketClientProtocol):
     def onMessage(self, payload, isBinary):
         if not isBinary:
             try:
-                payload_obj = json.loads(payload.decode('utf8'))
+                payload_obj = json.loads(payload.decode('utf8'), parse_float=Decimal)
             except ValueError:
                 pass
             else:
